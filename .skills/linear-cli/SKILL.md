@@ -15,6 +15,7 @@ Typical triggers include:
 - Japanese requests like "タスクにして", "issue 作って", "チケット切って", "TODO にしておいて"
 
 Do not create an issue for normal conversation. Only do it when tasking intent is explicit.
+When the user explicitly asks for Linear, an issue, a ticket, or a tracked task, do not fall back to `manage_todo` as a substitute. Either create the Linear issue or clearly explain why the Linear action could not be completed.
 
 ## Requirements
 
@@ -77,3 +78,4 @@ If `LINEAR_TEAM_ID` is set, add `--team "$LINEAR_TEAM_ID"`.
 - Do not guess missing critical scope when the Slack request is too vague.
 - Do not create duplicate issues if the user is only asking for status or discussion.
 - Treat missing Linear credentials as a deployment/configuration problem, not as a request for the user to share secrets in chat.
+- Do not create a local todo with `manage_todo` when the user asked for a Linear issue/task/ticket. Only use `manage_todo` if the user explicitly asked for an internal reminder instead of Linear.
