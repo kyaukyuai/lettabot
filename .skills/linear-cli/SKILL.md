@@ -1,0 +1,72 @@
+---
+name: linear-cli
+description: Create Linear issues from explicit task or ticket requests in Slack or chat. Use when the user clearly wants something tracked in Linear, and respond with the created issue identifier and URL.
+---
+
+# linear-cli
+
+Use this skill when the user explicitly wants a task, issue, ticket, or TODO created in Linear.
+
+Typical triggers include:
+- "create a Linear issue"
+- "make this a task"
+- "open a ticket"
+- "track this"
+- Japanese requests like "タスクにして", "issue 作って", "チケット切って", "TODO にしておいて"
+
+Do not create an issue for normal conversation. Only do it when tasking intent is explicit.
+
+## Requirements
+
+- `linear` must be on `PATH`
+- `LINEAR_API_KEY` must be set
+- `Bash` must remain enabled for the agent
+
+Optional environment:
+- `LINEAR_WORKSPACE`: if set, add `-w "$LINEAR_WORKSPACE"`
+- `LINEAR_TEAM_ID`: if set, add `--team "$LINEAR_TEAM_ID"`
+
+## Workflow
+
+1. Extract a concise issue title.
+2. Build a short markdown description from the Slack context: request, relevant details, constraints, and links or message excerpts if useful.
+3. If title or scope is too ambiguous, ask one concise follow-up before creating anything.
+4. Create the issue with `linear issue create --no-interactive`.
+5. Reply with the created issue identifier and URL.
+
+## Command pattern
+
+Prefer `--description-file` over inline `-d` for multiline markdown.
+
+```bash
+desc_file=$(mktemp)
+cat >"$desc_file" <<'EOF'
+# Summary
+- ...
+
+# Context
+- ...
+EOF
+
+linear issue create --no-interactive \
+  --title "Replace this title" \
+  --description-file "$desc_file"
+
+rm -f "$desc_file"
+```
+
+If `LINEAR_WORKSPACE` is set, add `-w "$LINEAR_WORKSPACE"`.
+
+If `LINEAR_TEAM_ID` is set, add `--team "$LINEAR_TEAM_ID"`.
+
+## After creation
+
+- Capture the created issue identifier from the command output.
+- If the create output does not include a URL, run `linear issue url <identifier>`.
+- Reply briefly with the issue identifier and URL.
+
+## Guardrails
+
+- Keep the created issue focused on one actionable task.
+- Do not guess missing critical scope when the Slack request is too vague.
+- Do not create duplicate issues if the user is only asking for status or discussion.

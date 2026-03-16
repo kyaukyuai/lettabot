@@ -17,6 +17,7 @@ LettaBot is a multi-channel AI assistant powered by [Letta](https://letta.com) t
 - [Scheduling Tasks](./cron-setup.md) - Cron jobs and heartbeats
 - [Gmail Pub/Sub](./gmail-pubsub.md) - Email notifications integration
 - [Railway Deployment](./railway-deploy.md) - Railway-specific setup (one-click deploy, volumes)
+- [Slack + Linear on Railway](./slack-linear-railway.md) - Deploy a Slack bot that creates Linear issues
 - [Releasing](./releasing.md) - How to create releases
 
 ### Channel Setup

@@ -249,7 +249,6 @@ Configure group batching and per-group response modes in `lettabot.yaml`:
 channels:
   slack:
     groupDebounceSec: 5
-    mentionPatterns: ["@mybot", "hey bot"]
     groups:
       "*": { mode: mention-only }             # default for all groups
       "C0987654321": { mode: listen }         # observe, only reply on mention
@@ -442,6 +441,7 @@ Check the [ADE](https://app.letta.com) to see if your agent is attempting to use
 - [Configuration Reference](docs/configuration.md)
 - [OpenAI-Compatible API](docs/openai-compat.md)
 - [Slack Setup](docs/slack-setup.md)
+- [Slack + Linear on Railway](docs/slack-linear-railway.md)
 - [Discord Setup](docs/discord-setup.md)
 - [WhatsApp Setup](docs/whatsapp-setup.md)
 - [Signal Setup](docs/signal-setup.md)
