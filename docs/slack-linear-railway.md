@@ -73,7 +73,9 @@ For this deployment path, these values are required inputs:
 | `LETTABOT_CONFIG_YAML` | Yes | Standalone Railway service variable |
 | `LETTABOT_API_KEY` | No | Standalone Railway service variable |
 
-The example in this guide assumes a structured YAML deploy, so Letta and Slack secrets are carried inside `LETTABOT_CONFIG_YAML`. `LINEAR_API_KEY` should remain a normal environment variable so the bundled `linear` CLI can read it directly.
+The example in this guide assumes a structured YAML deploy, so Letta and Slack secrets are carried inside `LETTABOT_CONFIG_YAML`. `LINEAR_API_KEY` should remain a normal environment variable. On startup, LettaBot uses it to run `linear auth login --plaintext` for the bundled `linear` CLI.
+
+`LINEAR_TEAM_ID` should be the Linear team key (for example `KYA`), not the team UUID.
 
 ## 5. Deploy
 
@@ -128,6 +130,7 @@ You are usually missing one of the extra Slack events or scopes for channel-wide
 Check all of these:
 
 - `LINEAR_API_KEY` is set on the Railway service
+- `LINEAR_TEAM_ID` is a team key like `KYA` if you set it at all
 - `features.skills` includes `linear-cli` in your encoded YAML
 - Bash is still enabled for the agent
 - the request actually contains explicit tasking intent

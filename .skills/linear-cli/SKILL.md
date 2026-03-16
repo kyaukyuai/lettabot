@@ -20,14 +20,14 @@ When the user explicitly asks for Linear, an issue, a ticket, or a tracked task,
 ## Requirements
 
 - `linear` must be on `PATH`
-- `LINEAR_API_KEY` must be set
+- `LINEAR_API_KEY` must be set so startup can authenticate `linear-cli`
 - `Bash` must remain enabled for the agent
 
 Never ask the user to paste a Linear API key into Slack or chat. Linear credentials belong in server-side environment variables such as Railway service variables.
 
 Optional environment:
 - `LINEAR_WORKSPACE`: if set, add `-w "$LINEAR_WORKSPACE"`
-- `LINEAR_TEAM_ID`: if set, add `--team "$LINEAR_TEAM_ID"`
+- `LINEAR_TEAM_ID`: if set, add `--team "$LINEAR_TEAM_ID"` using the team key (for example `KYA`), not a UUID
 
 ## Workflow
 
