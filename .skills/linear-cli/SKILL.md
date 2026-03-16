@@ -84,10 +84,17 @@ If `LINEAR_TEAM_ID` is set, add `--team "$LINEAR_TEAM_ID"`.
 
 - For "add a task", "タスク追加", "TODO にして", create a Linear issue.
 - For "what tasks exist", "タスク確認", "タスク一覧", use `linear issue list`.
+  - Default listing should show active work only: `--state unstarted --state started`.
+  - Prefer team-wide visibility for shared Slack task management: include `--all-assignees`.
+  - Limit the summary to a reasonable number like `--limit 20` unless the user asks for everything.
+  - If the user asks for completed tasks too, switch to `--all-states` or include `completed`.
 - For "mark done", "完了にして", "close this task", use `linear issue update`.
+  - If the issue ID is not explicitly given, first find the most likely matching active issue with `linear issue list`.
+  - Then update that issue to the requested state.
 - If `LINEAR_TEAM_ID` is set, include `--team "$LINEAR_TEAM_ID"` on issue list/create/update commands where applicable.
 - If `LINEAR_WORKSPACE` is set, include `-w "$LINEAR_WORKSPACE"`.
 - Prefer active/unstarted task views when summarizing current tasks unless the user asks for completed items too.
+- When listing tasks in Slack, summarize each task in one short line: issue ID, title, state, and assignee if relevant.
 
 ## Guardrails
 
