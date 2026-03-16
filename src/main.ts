@@ -398,6 +398,7 @@ async function main() {
         googleEnabled: !!agentConfig.integrations?.google?.enabled || !!agentConfig.polling?.gmail?.enabled,
         blueskyEnabled: !!agentConfig.channels?.bluesky?.enabled,
         ttsEnabled: voiceMemoEnabled,
+        additionalSkills: agentConfig.features?.skills ?? yamlConfig.features?.skills,
       },
     });
     

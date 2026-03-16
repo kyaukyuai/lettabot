@@ -42,6 +42,7 @@ Copy [slack-linear-railway.example.yaml](../slack-linear-railway.example.yaml) t
 Important details:
 
 - There is no `persona:` field in the current schema. This setup relies on the `linear-cli` skill instead of a long prompt blob.
+- Add `features.skills: [linear-cli]` so Railway installs the project-local skill into the agent-scoped skills directory before the session starts.
 - Do not leave `${VAR}` placeholders in YAML. Current LettaBot config does not interpolate environment variables inside YAML values.
 - Do not use `agent.model` as your primary model-setting workflow. Reuse an existing agent with `agent.id`, or set the model after first boot.
 
@@ -127,6 +128,7 @@ You are usually missing one of the extra Slack events or scopes for channel-wide
 Check all of these:
 
 - `LINEAR_API_KEY` is set on the Railway service
+- `features.skills` includes `linear-cli` in your encoded YAML
 - Bash is still enabled for the agent
 - the request actually contains explicit tasking intent
 

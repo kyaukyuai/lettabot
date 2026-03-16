@@ -33,6 +33,8 @@ channels:
       "C0123456789": { mode: open }
 
 features:
+  skills:
+    - linear-cli
   heartbeat:
     enabled: true
     intervalMin: 30
