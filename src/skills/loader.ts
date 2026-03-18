@@ -2,7 +2,7 @@
  * Skills Loader - Discover and parse skills from disk
  */
 
-import { existsSync, readdirSync, readFileSync, mkdirSync, cpSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, mkdirSync, cpSync, rmSync } from 'node:fs';
 import { execSync } from 'node:child_process';
 import { join, resolve, delimiter } from 'node:path';
 import matter from 'gray-matter';
@@ -324,14 +324,15 @@ function installSpecificSkills(
   const installed: string[] = [];
   
   for (const skillName of skillNames) {
-    // Skip if already installed
     const dest = join(targetDir, skillName);
-    if (existsSync(dest)) continue;
-    
+
     // Find skill in source directories (later dirs have priority)
     for (const sourceDir of sourceDirs) {
       const src = join(sourceDir, skillName);
       if (existsSync(src) && existsSync(join(src, 'SKILL.md'))) {
+        if (existsSync(dest)) {
+          rmSync(dest, { recursive: true, force: true });
+        }
         cpSync(src, dest, { recursive: true });
         installed.push(skillName);
         break;

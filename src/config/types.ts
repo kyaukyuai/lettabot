@@ -86,6 +86,7 @@ export interface AgentConfig {
   /** Features for this agent */
   features?: {
     cron?: boolean;
+    skills?: string[];       // Explicitly enable named skills at startup (copied into agent-scoped skills)
     heartbeat?: {
       enabled: boolean;
       intervalMin?: number;
@@ -185,6 +186,7 @@ export interface LettaBotConfig {
   // Features
   features?: {
     cron?: boolean;
+    skills?: string[];       // Explicitly enable named skills at startup (copied into agent-scoped skills)
     heartbeat?: {
       enabled: boolean;
       intervalMin?: number;

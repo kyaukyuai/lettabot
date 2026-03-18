@@ -32,6 +32,8 @@ channels:
       "*": { mode: open }
 
 features:
+  skills:
+    - linear-cli
   heartbeat:
     enabled: true
     intervalMin: 30

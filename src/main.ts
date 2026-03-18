@@ -6,6 +6,7 @@
  */
 
 import { existsSync, mkdirSync, promises as fs } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { join, resolve } from 'node:path';
 
 // API server imports
@@ -231,6 +232,36 @@ function parseHeartbeatSkipRecentPolicy(raw?: string): 'fixed' | 'fraction' | 'o
   return undefined;
 }
 
+function bootstrapLinearCliAuth(): void {
+  const apiKey = process.env.LINEAR_API_KEY?.trim();
+  if (!apiKey) return;
+
+  const workspace = process.env.LINEAR_WORKSPACE?.trim();
+  const args = ['auth', 'login'];
+  if (workspace) {
+    args.push('-w', workspace);
+  }
+  args.push('-k', apiKey, '--plaintext');
+
+  const result = spawnSync('linear', args, {
+    encoding: 'utf-8',
+    env: process.env,
+  });
+
+  if (result.error) {
+    log.warn(`linear auth bootstrap failed to start: ${result.error.message}`);
+    return;
+  }
+
+  if (result.status !== 0) {
+    const detail = (result.stderr || result.stdout || '').trim();
+    log.warn(`linear auth bootstrap failed${detail ? `: ${detail}` : ''}`);
+    return;
+  }
+
+  log.info(`Bootstrapped linear-cli auth from LINEAR_API_KEY${workspace ? ` (workspace=${workspace})` : ''}`);
+}
+
 // Global config (shared across all agents)
 const globalConfig = {
   workingDir: getWorkingDir(),
@@ -260,6 +291,7 @@ if (!isDockerServerMode(yamlConfig.server.mode) && !process.env.LETTA_API_KEY) {
 
 async function main() {
   log.info('Starting LettaBot...');
+  bootstrapLinearCliAuth();
   
   // Log storage locations (helpful for Railway debugging)
   const dataDir = getDataDir();
@@ -398,6 +430,7 @@ async function main() {
         googleEnabled: !!agentConfig.integrations?.google?.enabled || !!agentConfig.polling?.gmail?.enabled,
         blueskyEnabled: !!agentConfig.channels?.bluesky?.enabled,
         ttsEnabled: voiceMemoEnabled,
+        additionalSkills: agentConfig.features?.skills ?? yamlConfig.features?.skills,
       },
     });
     

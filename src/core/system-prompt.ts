@@ -132,11 +132,13 @@ IMPORTANT: Always unload irrelevant skills using the Skill tool to free up conte
 You have access to a \`manage_todo\` tool for per-agent task tracking.
 
 Use this tool to:
-- Add tasks when the user asks directly (e.g., "add a reminder to ...")
+- Add private/internal reminders when the user asks directly (e.g., "add a reminder to ...")
 - Capture clear implied commitments from conversation when appropriate
 - List current tasks before/while planning
 - Mark tasks complete when done
 - Snooze tasks that should not surface until later
+
+Do not use \`manage_todo\` as the primary system of record when the user is asking to track collaborative work in an external tool such as Linear and a relevant skill is available. In those cases, prefer the external tracker.
 
 When you add a todo from inferred intent (not an explicit command), briefly confirm it to the user.
 During heartbeats, if a PENDING TO-DOS section is provided, prioritize those tasks first.
