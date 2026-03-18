@@ -4,14 +4,19 @@ Deploy LettaBot to [Railway](https://railway.app) for always-on hosting. For oth
 
 This repo now prefers Railway's root-`Dockerfile` flow rather than Nixpacks so custom CLIs, project-local skills, and bundled skills behave the same locally and in production.
 
-## One-Click Deploy
+## Deploy from GitHub
 
-1. Fork this repository
-2. Connect to Railway
-3. Set environment variables (see below)
-4. Deploy!
+1. Create a Railway service from this GitHub repository
+2. Provide `LETTA_API_KEY`
+3. Deploy the service
+4. Add channel configuration and redeploy
 
-**No local setup required.** LettaBot automatically finds or creates your agent by name.
+**No local setup required.** The first deploy can boot with only `LETTA_API_KEY`, which lets Railway finish the deployment, attach the volume, and pass healthchecks before you wire up channels.
+
+After the first deploy, configure the bot with either:
+
+- `LETTABOT_CONFIG_YAML` for full YAML-based config
+- Individual channel env vars such as `TELEGRAM_BOT_TOKEN` or `SLACK_BOT_TOKEN`
 
 ## Configuration
 
@@ -27,7 +32,7 @@ base64 < lettabot.yaml | tr -d '\n'
 lettabot config encode
 ```
 
-Set the output as `LETTABOT_CONFIG_YAML` in your Railway service variables. That's it -- no other env vars needed (everything is in the YAML).
+Set the output as `LETTABOT_CONFIG_YAML` in your Railway service variables. If your YAML includes Letta and channel credentials, no other env vars are needed.
 
 ### Option B: Individual Environment Variables
 
@@ -80,6 +85,16 @@ SLACK_APP_TOKEN=xapp-...
 | `LOG_FORMAT` | - | Set to `json` for structured JSON output (recommended for Railway) |
 
 ## How It Works
+
+### First Deploy Experience
+
+If the service has `LETTA_API_KEY` but no channels yet, LettaBot starts in an API-only waiting state:
+
+- `/health` returns `ok`
+- the admin/API server is available
+- no messaging channels are connected yet
+
+This makes the published Railway template usable as a true first deploy. Once you add channel settings and redeploy, the bot starts receiving messages normally.
 
 ### Agent Discovery
 
@@ -179,9 +194,14 @@ Alternatively, use `allowlist` DM policy and pre-configure allowed users in envi
 
 ## Troubleshooting
 
-### "No channels configured"
+### Deploy succeeded but the bot does not respond anywhere
 
-Set at least one channel token (TELEGRAM_BOT_TOKEN, DISCORD_BOT_TOKEN, or SLACK tokens).
+The service can now start without channels during the first Railway deploy. To make the bot usable, add at least one channel configuration and redeploy:
+
+- `TELEGRAM_BOT_TOKEN`
+- `DISCORD_BOT_TOKEN`
+- `SLACK_BOT_TOKEN` and `SLACK_APP_TOKEN`
+- or `LETTABOT_CONFIG_YAML`
 
 ### Agent not found / wrong agent
 
@@ -212,13 +232,3 @@ If data is lost between restarts:
 2. Check that the mount path is set (e.g., `/data`)
 3. Look for `[Storage] Railway volume detected` in startup logs
 4. If not using a volume, set `LETTA_AGENT_ID` explicitly
-
-## Deploy Button
-
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/lettabot?utm_medium=integration&utm_source=template&utm_campaign=generic)
-
-Or add to your README:
-
-```markdown
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/lettabot?utm_medium=integration&utm_source=template&utm_campaign=generic)
-```

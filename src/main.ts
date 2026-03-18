@@ -326,12 +326,22 @@ async function main() {
     process.exit(1);
   }
 
-  // Validate at least one agent has channels
+  // Validate at least one agent has channels. For container deploys we allow
+  // channel-less startup so one-click Railway templates can boot, pass
+  // healthchecks, and then be configured with channels afterward.
   const totalChannels = agents.reduce((sum, a) => sum + Object.keys(a.channels).length, 0);
   if (totalChannels === 0) {
-    log.error('No channels configured in any agent.');
-    log.error('Configure channels in lettabot.yaml or set environment variables.');
-    process.exit(1);
+    if (isContainerDeploy) {
+      log.warn('No channels configured in any agent.');
+      log.warn(
+        'Starting in API-only mode so the deployment can come up. ' +
+        'Add channel environment variables or LETTABOT_CONFIG_YAML and redeploy to connect a bot.'
+      );
+    } else {
+      log.error('No channels configured in any agent.');
+      log.error('Configure channels in lettabot.yaml or set environment variables.');
+      process.exit(1);
+    }
   }
 
   const attachmentsDir = resolve(globalConfig.workingDir, 'attachments');
@@ -512,8 +522,10 @@ async function main() {
       services.groupBatchers.push(batcher);
     }
 
-    // Pre-warm the SDK session subprocess so the first message doesn't pay startup cost
-    bot.warmSession().catch(() => {});
+    // Pre-warm only when the agent has at least one connected channel.
+    if (adapters.length > 0) {
+      bot.warmSession().catch(() => {});
+    }
 
     // Per-agent cron
     if (agentConfig.features?.cron ?? globalConfig.cronEnabled) {

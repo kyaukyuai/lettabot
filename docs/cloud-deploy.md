@@ -100,7 +100,7 @@ fly scale count 1
 
 ## Railway
 
-See [Railway Deployment](./railway-deploy.md) for the full guide including one-click deploy, persistent volumes, and Railway-specific configuration.
+See [Railway Deployment](./railway-deploy.md) for the full guide including GitHub-based deploy, persistent volumes, and Railway-specific configuration.
 
 The short version:
 
