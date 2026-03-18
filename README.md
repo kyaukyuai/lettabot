@@ -117,6 +117,18 @@ That's it! Message your bot on Telegram.
 
 > **Note:** For detailed environment variable reference and multi-channel setup, see [SKILL.md](./SKILL.md)
 
+### Slack + Linear on Railway (5 min)
+
+If you want the Slack + Linear deployment path from the article, start here instead of the Telegram onboarding flow:
+
+1. Copy [`slack-linear-railway.example.yaml`](./slack-linear-railway.example.yaml) to `lettabot.yaml` and replace the placeholder Letta and Slack secrets.
+2. Keep the default `groupDebounceSec: 0` and `groups."*".mode: open` so channel messages are processed immediately.
+3. Encode the config with `LETTABOT_CONFIG=./lettabot.yaml lettabot config encode`.
+4. In Railway, set `LETTABOT_CONFIG_YAML` and `LINEAR_API_KEY`, mount a volume at `/data`, and deploy the root `Dockerfile`.
+5. Add the Slack scopes and events required for open-channel delivery: `channels:history`, `channels:read`, `groups:history`, `groups:read`, `message.channels`, and `message.groups`.
+
+Continue with [Slack + Linear on Railway](docs/slack-linear-railway.md) for the full setup, model-selection notes, and verification checklist.
+
 ## Voice
 
 LettaBot can transcribe incoming voice messages (via OpenAI Whisper or Mistral Voxtral) and reply with voice memos (via ElevenLabs or OpenAI TTS). Voice notes render as native bubbles on Telegram and WhatsApp.
@@ -249,7 +261,6 @@ Configure group batching and per-group response modes in `lettabot.yaml`:
 channels:
   slack:
     groupDebounceSec: 5
-    mentionPatterns: ["@mybot", "hey bot"]
     groups:
       "*": { mode: mention-only }             # default for all groups
       "C0987654321": { mode: listen }         # observe, only reply on mention
@@ -442,6 +453,7 @@ Check the [ADE](https://app.letta.com) to see if your agent is attempting to use
 - [Configuration Reference](docs/configuration.md)
 - [OpenAI-Compatible API](docs/openai-compat.md)
 - [Slack Setup](docs/slack-setup.md)
+- [Slack + Linear on Railway](docs/slack-linear-railway.md)
 - [Discord Setup](docs/discord-setup.md)
 - [WhatsApp Setup](docs/whatsapp-setup.md)
 - [Signal Setup](docs/signal-setup.md)

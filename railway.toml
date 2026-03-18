@@ -1,17 +1,7 @@
 # Railway deployment configuration
-# https://docs.railway.app/reference/config-as-code
-
-[build]
-builder = "NIXPACKS"
-
-[build.nixpacks]
-nixPkgs = ["nodejs_22"]
+# Railway auto-detects the root Dockerfile for this repo.
 
 [deploy]
-# Build TypeScript before starting
-buildCommand = "npm run build"
-# Start the server
-startCommand = "npm start"
 # Health check endpoint
 healthcheckPath = "/health"
 healthcheckTimeout = 30

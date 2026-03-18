@@ -1,0 +1,37 @@
+# Example config for a Railway-deployed Slack bot that can create Linear issues.
+# Replace placeholder values before encoding this file into LETTABOT_CONFIG_YAML.
+#
+# Notes:
+# - Current LettaBot config does not interpolate ${ENV_VAR} inside YAML.
+# - The model is configured on the Letta agent itself, not here. Reuse an existing
+#   agent with `agent.id` if you want a specific model from first boot.
+# - Keep Bash enabled; the `linear-cli` skill shells out to the `linear` command.
+
+server:
+  mode: api
+  apiKey: letta_replace_me
+  api:
+    host: 0.0.0.0
+
+agent:
+  name: Slack Linear Bot
+  # id: agent-1234567890
+
+conversations:
+  mode: shared
+  heartbeat: last-active
+
+channels:
+  slack:
+    enabled: true
+    appToken: xapp-replace-me
+    botToken: xoxb-replace-me
+    dmPolicy: open
+    groupDebounceSec: 0
+    groups:
+      "*": { mode: open }
+
+features:
+  heartbeat:
+    enabled: true
+    intervalMin: 30

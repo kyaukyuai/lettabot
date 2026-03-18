@@ -53,6 +53,15 @@ Socket Mode lets your bot connect without exposing a public endpoint.
 | `im:read` | View DM channel info |
 | `im:write` | Start DM conversations |
 
+If you want the bot to process all messages in selected channels with `groups.<id>.mode: open` or `listen`, also add:
+
+| Scope | Purpose |
+|-------|---------|
+| `channels:history` | Read public channel history |
+| `channels:read` | View public channel info |
+| `groups:history` | Read private channel history |
+| `groups:read` | View private channel info |
+
 ## Step 4: Enable Events
 
 1. In the left sidebar, go to **"Event Subscriptions"**
@@ -66,6 +75,13 @@ Socket Mode lets your bot connect without exposing a public endpoint.
 | `message.im` | Triggers when someone DMs your bot |
 
 5. Click **"Save Changes"**
+
+If you want `groups.<id>.mode: open` or `listen`, also subscribe to:
+
+| Event | Purpose |
+|-------|---------|
+| `message.channels` | Receive public channel messages |
+| `message.groups` | Receive private channel messages |
 
 > **Important**: If you add or change events after installing the app, you must reinstall it (Step 6) for changes to take effect. The token stays the same.
 

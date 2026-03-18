@@ -2,6 +2,8 @@
 
 Deploy LettaBot to [Railway](https://railway.app) for always-on hosting. For other platforms (Fly.io, Docker, Render), see [Cloud Deployment](./cloud-deploy.md).
 
+This repo now prefers Railway's root-`Dockerfile` flow rather than Nixpacks so custom CLIs, project-local skills, and bundled skills behave the same locally and in production.
+
 ## One-Click Deploy
 
 1. Fork this repository
@@ -92,12 +94,12 @@ This means **your agent persists across deploys** without any manual ID copying.
 ### Build & Deploy
 
 Railway automatically:
-- Detects Node.js and installs dependencies
-- Runs `npm run build` to compile TypeScript
-- Runs `npm start` to start the server
+- Detects the root `Dockerfile` and builds the container image
 - Sets the `PORT` environment variable
 - Binds API server to `0.0.0.0` by default on Railway (unless `API_HOST` is set)
 - Monitors `/health` endpoint
+
+If you need extra binaries, system packages, or project-local skills inside the runtime image, add them to the root `Dockerfile`.
 
 ## Persistent Storage
 
