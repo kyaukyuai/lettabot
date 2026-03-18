@@ -8,6 +8,12 @@ Persistent AI assistant for Telegram, Slack, Discord, WhatsApp, Signal, and Blue
 
 LettaBot is designed for one agent with long-lived memory, reachable from the messaging apps you already use. You can run it locally, self-host it, or deploy it on Railway.
 
+> [!IMPORTANT]
+> This fork exists as a companion repository for the article "LettaBot × 自作 linear-cli — 記憶を持つ Slack Bot でタスク管理を試した".
+> It is preserved as a snapshot for readers and is not intended to be actively maintained.
+> For the article version of this repo, use the `article-note-43` tag.
+> For the maintained upstream project, see [letta-ai/lettabot](https://github.com/letta-ai/lettabot).
+
 ## Why LettaBot
 
 - One agent can span multiple channels with shared memory.
